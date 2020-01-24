@@ -538,8 +538,7 @@ function amp_manage_keyword( $keyword, $capability ) {
 	$owner = amp_keyword_owner($keyword);
 	if ( $owner === null && amp_have_capability( ampCap::ManageAnonURL ) )
 		return true;
-	else
-		return false;
+	
 	// Self Edit?
 	$user = YOURLS_USER !== false ? YOURLS_USER : NULL;
 	if ( $owner === $user && amp_have_capability( $capability ) )
