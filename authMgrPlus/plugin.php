@@ -269,9 +269,10 @@ function amp_have_capability( $capability ) {
 		$user = YOURLS_USER !== false ? YOURLS_USER : NULL;
 		$user_caps = array();
 		foreach ( $amp_role_capabilities as $rolename => $rolecaps ) {
-				if ( amp_user_has_role( $user, $rolename ) ) {
-						$user_caps = array_merge( $user_caps, $rolecaps );
-				}
+			if ( amp_user_has_role( $user, $rolename ) ) {
+				$amp_role_assigned = True;
+				$user_caps = array_merge( $user_caps, $rolecaps );
+			}
 		}
 		$user_caps = array_unique( $user_caps );
 		// Is the requested capability in this list?
@@ -287,11 +288,11 @@ function amp_have_capability( $capability ) {
 				break;
 		}
 	}
-	if( !$return ) {
-	    if ( isset( $amp_default_role )  && in_array ($amp_default_role, array_keys( $amp_role_capabilities ) ) ) {
-		$default_caps = $amp_role_capabilities [ $amp_default_role ];
-		$return =  in_array( $capability, $default_caps );
-	    }
+	if( !$amp_role_assigned ) {
+		if ( isset( $amp_default_role )  && in_array ($amp_default_role, array_keys( $amp_role_capabilities ) ) ) {
+			$default_caps = $amp_role_capabilities [ $amp_default_role ];
+			$return =  in_array( $capability, $default_caps );
+		}
 	}
 	return $return;
 }
@@ -486,7 +487,7 @@ function amp_env_check() {
 yourls_add_action( 'activated_authMgrPlus/plugin.php', 'amp_activated' );
 function amp_activated() {
 	global $ydb; 
-    
+
 	$table = YOURLS_DB_TABLE_URL;
 	$sql = "DESCRIBE `".$table."`";
 	$results = $ydb->fetchObjects($sql);
