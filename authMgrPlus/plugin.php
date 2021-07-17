@@ -590,7 +590,7 @@ function amp_insert_link($actions) {
 	global $ydb; 
 
 	$keyword = $actions[2];
-	$user = defined(YOURLS_USER) ? YOURLS_USER : NULL;
+	$user = defined('YOURLS_USER') ? YOURLS_USER : NULL;
 	$table = YOURLS_DB_TABLE_URL;
 
 	// Insert $keyword against $username
